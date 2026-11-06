@@ -1,0 +1,28 @@
+#include <winver.h>
+
+1 VERSIONINFO
+FILEVERSION 0,1,0,0
+PRODUCTVERSION 0,1,0,0
+FILEOS VOS_NT_WINDOWS32
+FILETYPE VFT_APP
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "040a04b0"
+    BEGIN
+      VALUE "CompanyName", "Caplis"
+      VALUE "FileDescription", "Caplis - editor de video"
+      VALUE "FileVersion", "0.1.0"
+      VALUE "InternalName", "Caplis"
+      VALUE "OriginalFilename", "Caplis.exe"
+      VALUE "ProductName", "Caplis"
+      VALUE "ProductVersion", "0.1.0"
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x40a, 0x4b0
+  END
+END
+
+2 ICON "caplis.ico"

@@ -1,0 +1,16 @@
+node_modules/
+# datos personales y generados
+proyectos/
+canales/
+generado/
+bridge/*.json
+bridge/*.tmp
+*.log
+# binarios y medios
+Caplis.exe
+build/*.res
+engines/*.exe
+engines/*.rnnn
+*.mp4
+*.wav
+*.mp3

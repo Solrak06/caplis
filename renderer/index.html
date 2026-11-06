@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' file: data: blob:; img-src 'self' file: data: blob:; media-src 'self' file: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'">
+  <title>Caplis</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Iconos (sprite SVG) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-media" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9.5v5l4-2.5z" fill="currentColor" stroke="none"/></symbol>
+      <symbol id="i-sound" viewBox="0 0 24 24"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></symbol>
+      <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.7 1.8 1.8.7-1.8.7L19 21l-.7-1.8-1.8-.7 1.8-.7z"/></symbol>
+      <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+      <symbol id="i-text" viewBox="0 0 24 24"><path d="M5 6V4h14v2M12 4v16M9 20h6"/></symbol>
+      <symbol id="i-cc" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10.5 10.2a2.2 2.2 0 1 0 0 3.6M17 10.2a2.2 2.2 0 1 0 0 3.6"/></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor" stroke="none"/></symbol>
+      <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6.5" y="5" width="4" height="14" rx="1" fill="currentColor" stroke="none"/><rect x="13.5" y="5" width="4" height="14" rx="1" fill="currentColor" stroke="none"/></symbol>
+      <symbol id="i-start" viewBox="0 0 24 24"><path d="M6 5v14"/><path d="M18 5v14l-10-7z" fill="currentColor" stroke="none"/></symbol>
+      <symbol id="i-end" viewBox="0 0 24 24"><path d="M18 5v14"/><path d="M6 5v14l10-7z" fill="currentColor" stroke="none"/></symbol>
+      <symbol id="i-back5" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v4h4"/><text x="12" y="15.5" font-size="7.5" text-anchor="middle" fill="currentColor" stroke="none" font-family="Segoe UI" font-weight="700">5</text></symbol>
+      <symbol id="i-fwd5" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/><text x="12" y="15.5" font-size="7.5" text-anchor="middle" fill="currentColor" stroke="none" font-family="Segoe UI" font-weight="700">5</text></symbol>
+      <symbol id="i-full" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+      <symbol id="i-vol" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"/></symbol>
+      <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5"/></symbol>
+      <symbol id="i-cut" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.6 7.6L20 18M8.6 16.4L20 6"/></symbol>
+      <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
+      <symbol id="i-lane" viewBox="0 0 24 24"><path d="M3 7h18M3 12h12M3 17h8M18 14v6M15 17h6"/></symbol>
+      <symbol id="i-magnet" viewBox="0 0 24 24"><path d="M6 3v8a6 6 0 0 0 12 0V3h-4v8a2 2 0 0 1-4 0V3z"/></symbol>
+      <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v5h7V3M8 21v-7h8v7"/></symbol>
+      <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="i-zoomin" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5M8.5 11h5M11 8.5v5"/></symbol>
+      <symbol id="i-zoomout" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5M8.5 11h5"/></symbol>
+      <symbol id="i-fit" viewBox="0 0 24 24"><path d="M3 12h18M7 8l-4 4 4 4M17 8l4 4-4 4"/></symbol>
+      <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></symbol>
+      <symbol id="i-redo" viewBox="0 0 24 24"><path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 0 0 0 12h3"/></symbol>
+      <symbol id="i-fx" viewBox="0 0 24 24"><path d="M4 20L15 9"/><path d="M13.5 7.5l3 3"/><path d="M17 3v3M15.5 4.5h3M20 9v2M19 10h2M10 3v2M9 4h2"/></symbol>
+      <symbol id="i-history" viewBox="0 0 24 24"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6"/><path d="M3 4v4h4"/><path d="M12 8v4.5l3 2"/></symbol>
+    </defs>
+  </svg>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="fxRgb" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">
+      <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r"/>
+      <feOffset id="fxRgbR" in="r" dx="6" dy="0" result="r2"/>
+      <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="g"/>
+      <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="b"/>
+      <feOffset id="fxRgbB" in="b" dx="-6" dy="0" result="b2"/>
+      <feComposite in="r2" in2="g" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="rg"/>
+      <feComposite in="rg" in2="b2" operator="arithmetic" k1="0" k2="1" k3="1" k4="0"/>
+    </filter>
+  </svg>
+
+  <!-- Barra de título propia -->
+  <div class="titlebar">
+    <div class="tb-left">
+      <span class="tb-logo">◐</span><span class="tb-name">Caplis</span>
+      <nav class="tb-nav">
+        <button id="navHome" class="tb-tab">Proyectos</button>
+        <button id="navEditor" class="tb-tab hidden">Editor</button>
+      </nav>
+    </div>
+    <div class="tb-drag"></div>
+    <div class="tb-right">
+      <span id="tbProject" class="tb-project"></span><span id="tbVersion" class="tb-ver hidden" title="Versión actual · clic para ver el historial"></span>
+      <span id="tbSaved" class="tb-saved"></span>
+      <button class="tb-win" id="winMin" title="Minimizar"><svg viewBox="0 0 10 10"><rect x="1" y="4.5" width="8" height="1"/></svg></button>
+      <button class="tb-win" id="winMax" title="Maximizar"><svg viewBox="0 0 10 10"><rect x="1.5" y="1.5" width="7" height="7" fill="none" stroke="currentColor" stroke-width="1"/></svg></button>
+      <button class="tb-win close" id="winClose" title="Cerrar"><svg viewBox="0 0 10 10"><path d="M1 1 L9 9 M9 1 L1 9" stroke="currentColor" stroke-width="1.2"/></svg></button>
+    </div>
+  </div>
+
+  <!-- INICIO -->
+  <section id="home" class="home">
+    <div class="home-head">
+      <div>
+        <h1>Tus proyectos</h1>
+        <p class="muted">Abre un proyecto o crea uno nuevo.</p>
+      </div>
+      <button id="btnNew" class="primary big"><svg class="ic"><use href="#i-plus"/></svg> Nuevo proyecto</button>
+    </div>
+    <div id="projectsGrid" class="projects-grid"></div>
+    <div id="projectsEmpty" class="projects-empty hidden">
+      <div class="pe-art">◐</div>
+      <h2>Aún no tienes proyectos</h2>
+      <p class="muted">Crea uno para empezar.</p>
+      <button id="btnNew2" class="primary big"><svg class="ic"><use href="#i-plus"/></svg> Crear mi primer proyecto</button>
+    </div>
+  </section>
+
+  <!-- EDITOR -->
+  <main id="editor" class="workspace hidden">
+    <aside class="left">
+      <nav class="tabs">
+        <button data-tab="media" class="active" title="Tus vídeos, audios e imágenes"><svg class="ic"><use href="#i-media"/></svg>Medios</button>
+        <button data-tab="library" title="Biblioteca «Audio para Videos»"><svg class="ic"><use href="#i-sound"/></svg>Sonidos</button>
+        <button data-tab="enhance" title="Limpiar y mejorar la voz"><svg class="ic"><use href="#i-spark"/></svg>Mejorar</button>
+        <button data-tab="tts" title="Texto a voz"><svg class="ic"><use href="#i-mic"/></svg>Narrar</button>
+        <button data-tab="text" title="Títulos y textos"><svg class="ic"><use href="#i-text"/></svg>Texto</button>
+        <button data-tab="subs" title="Subtítulos automáticos"><svg class="ic"><use href="#i-cc"/></svg>Subtítulos</button>
+        <button data-tab="fx" title="Looks de color, movimiento y efectos de impacto"><svg class="ic"><use href="#i-fx"/></svg>Efectos</button>
+        <button data-tab="versions" title="Historial: cambios de Claude y tuyos; vuelve a cualquier versión"><svg class="ic"><use href="#i-history"/></svg>Versiones<span id="verBadge" class="tab-badge hidden"></span></button>
+      </nav>
+
+      <section class="panel" data-panel="media">
+        <div class="panel-head">
+          <h2>Medios</h2>
+          <button id="btnImport" class="primary small"><svg class="ic"><use href="#i-plus"/></svg> Importar</button>
+        </div>
+        <div id="dropHint" class="drop-hint">Arrastra aquí vídeos, audios o imágenes<br><span class="muted small">o pulsa «Importar»</span></div>
+        <div id="mediaGrid" class="media-grid"></div>
+      </section>
+
+      <section class="panel hidden" data-panel="library">
+        <div class="panel-head"><h2>Sonidos</h2><button id="libReload" class="ghost small icon-only" title="Recargar">↻</button></div>
+        <input id="libSearch" type="text" placeholder="Buscar sonido…" class="search">
+        <div id="libGroups" class="lib-groups"></div>
+      </section>
+
+      <section class="panel hidden" data-panel="enhance">
+        <div class="panel-head"><h2>Mejorar voz</h2></div>
+        <div id="enhTarget" class="target">Selecciona un clip con voz en la línea de tiempo</div>
+        <label class="field">Intensidad
+          <div class="seg" id="enhLevel">
+            <button data-v="suave">Baja</button><button data-v="medio" class="on">Media</button><button data-v="fuerte">Alta</button>
+          </div>
+        </label>
+        <details class="more">
+          <summary>Opciones avanzadas</summary>
+          <label class="field">Motor <select id="enhMode"></select></label>
+          <label class="field">Volumen final
+            <select id="enhLoud">
+              <option value="-14">Alto · YouTube (-14 LUFS)</option>
+              <option value="-16" selected>Redes (-16 LUFS)</option>
+              <option value="-19">Suave · podcast (-19 LUFS)</option>
+            </select>
+          </label>
+        </details>
+        <button id="btnEnhance" class="primary wide" disabled><svg class="ic"><use href="#i-spark"/></svg> Mejorar audio</button>
+        <p id="enhNote" class="note"></p>
+      </section>
+
+      <section class="panel hidden" data-panel="tts">
+        <div class="panel-head"><h2>Narrar texto</h2><button id="btnScript" class="ghost small hidden">Usar guion</button></div>
+        <textarea id="ttsText" rows="7" placeholder="Escribe o pega el texto a narrar…"></textarea>
+        <div class="count muted"><span id="ttsCount">0</span> caracteres</div>
+        <label class="field">Voz <select id="ttsVoice"></select></label>
+        <div class="two">
+          <label class="field">Motor <select id="ttsEngine"></select></label>
+          <label class="field">Velocidad <span id="ttsSpeedLbl" class="inline-val">1.00×</span>
+            <input id="ttsSpeed" type="range" min="0.7" max="1.3" step="0.05" value="1"></label>
+        </div>
+        <label class="check"><input id="ttsEnhance" type="checkbox" checked> Volumen uniforme</label>
+        <button id="btnTts" class="primary wide"><svg class="ic"><use href="#i-mic"/></svg> Generar en el cursor</button>
+        <p id="ttsNote" class="note"></p>
+      </section>
+
+      <section class="panel hidden" data-panel="text">
+        <div class="panel-head"><h2>Texto</h2></div>
+        <p class="muted small">Elige una plantilla: se añade en el cursor. Arrastra el texto en el visor para moverlo.</p>
+        <div id="txTemplates" class="templates"></div>
+        <div id="textList" class="text-list"></div>
+        <div id="textEditor" class="text-editor hidden">
+          <textarea id="txText" rows="2" placeholder="Escribe el texto…"></textarea>
+          <div class="two">
+            <label class="field">Inicio (s) <input id="txStart" type="text" value="0.0"></label>
+            <label class="field">Duración (s) <input id="txDur" type="text" value="3.0"></label>
+          </div>
+          <div class="two">
+            <label class="field">Tamaño <input id="txSize" type="range" min="24" max="200" value="72"></label>
+            <label class="field">Animación <select id="txAnim"></select></label>
+          </div>
+          <div class="two">
+            <label class="field">Fuente <select id="txFont"></select></label>
+            <label class="field">Color <input id="txColor" type="color" value="#ffffff"></label>
+          </div>
+          <div class="two">
+            <label class="field">Borde <input id="txOutline" type="color" value="#000000"></label>
+            <label class="field">Caja <span class="inline-pair"><input id="txBoxOn" type="checkbox"><input id="txBox" type="color" value="#ffd84a"></span></label>
+          </div>
+          <label class="check"><input id="txGlow" type="checkbox"> Brillo (neón)</label>
+          <div class="row-actions">
+            <button id="txDelete" class="ghost small"><svg class="ic"><use href="#i-trash"/></svg> Eliminar</button>
+            <button id="txDone" class="primary small">Listo</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel hidden" data-panel="subs">
+        <div class="panel-head"><h2>Subtítulos</h2><span id="subCount" class="chip hidden"></span></div>
+        <label class="field">Audio a transcribir <select id="subSource"></select></label>
+        <div class="two">
+          <label class="field">Precisión
+            <select id="subModel">
+              <option value="small" selected>Rápida</option>
+              <option value="medium">Alta</option>
+              <option value="large-v3">Máxima</option>
+            </select>
+          </label>
+          <label class="field">Idioma
+            <select id="subLang">
+              <option value="es" selected>Español</option>
+              <option value="auto">Detectar</option>
+              <option value="en">Inglés</option>
+            </select>
+          </label>
+        </div>
+        <button id="btnTranscribe" class="primary wide" disabled><svg class="ic"><use href="#i-cc"/></svg> Generar subtítulos</button>
+        <button id="btnTranscript" class="ghost wide" disabled>Exportar texto (.txt)</button>
+        <p id="subNote" class="note"></p>
+
+        <div id="subStyle" class="hidden">
+          <div class="section-title">Estilo</div>
+          <div class="two">
+            <label class="field">Tamaño <input id="styleSize" type="range" min="24" max="140" value="56"></label>
+            <label class="field">Posición
+              <select id="stylePos"><option value="abajo" selected>Abajo</option><option value="centro">Centro</option><option value="arriba">Arriba</option></select>
+            </label>
+          </div>
+          <div class="two">
+            <label class="field">Color <input id="styleColor" type="color" value="#ffffff"></label>
+            <label class="field">Borde <input id="styleOutline" type="color" value="#000000"></label>
+          </div>
+          <label class="check"><input id="styleBox" type="checkbox"> Fondo oscuro</label>
+          <label class="check"><input id="subBurn" type="checkbox" checked> Incluir en el MP4</label>
+          <div class="section-title">Líneas <span class="muted small">(clic en el tiempo para ir)</span></div>
+          <div class="sub-list" id="subList"></div>
+        </div>
+      </section>
+
+      <section class="panel hidden" data-panel="fx">
+        <div class="panel-head"><h2>Efectos</h2></div>
+        <div id="fxClipBox"></div>
+        <div class="section-title">Impactos <span class="muted small">(se añaden en el cursor)</span></div>
+        <div id="fxImpacts" class="fx-grid"></div>
+        <div id="fxList" class="text-list"></div>
+      </section>
+
+      <section class="panel hidden" data-panel="versions">
+        <div class="panel-head"><h2>Versiones</h2><button id="verSave" class="primary small" title="Guarda el estado actual como versión">Guardar versión</button></div>
+        <p class="muted small">Cada cambio de Claude crea una versión. «Ver» la muestra sin tocar nada; «Restaurar» vuelve a ella (como versión nueva: nunca se pierde nada).</p>
+        <div id="verList" class="ver-list"></div>
+      </section>
+    </aside>
+
+    <section class="center">
+      <div class="stage-wrap" id="stageWrap">
+        <div id="stage" class="stage">
+          <div id="vidWrap" class="vid-wrap">
+            <video id="previewB" playsinline muted></video>
+            <video id="preview" playsinline></video>
+            <div id="fxVignette" class="fx-vignette"></div>
+            <div id="fxGrain" class="fx-grain"></div>
+          </div>
+          <div id="fxFlash" class="fx-flash"></div>
+          <div id="textLayer" class="text-layer"></div>
+          <div id="verPreview" class="ver-banner hidden"><span id="verPreviewTxt"></span><button id="verPreviewRestore" class="primary small">Restaurar esta</button><button id="verPreviewExit" class="ghost small">Volver a la actual</button></div>
+          <div id="capOverlay" class="cap-overlay"><span id="capText"></span></div>
+          <div id="stageEmpty" class="stage-empty">
+            <div><svg class="ic big"><use href="#i-media"/></svg></div>
+            Importa clips y arrástralos a la línea de tiempo
+          </div>
+          <!-- Barra de reproducción sobre el vídeo (aparece al pasar el ratón) -->
+          <div id="scrub" class="scrub">
+            <div class="scrub-time"><span id="scrubCur">00:00</span> / <span id="scrubTot">00:00</span></div>
+            <div id="scrubTrack" class="scrub-track">
+              <div id="scrubFill" class="scrub-fill"></div>
+              <div id="scrubHover" class="scrub-hover"></div>
+              <div id="scrubKnob" class="scrub-knob"></div>
+              <div id="scrubTip" class="scrub-tip">00:00</div>
+            </div>
+          </div>
+          <div id="bigPlay" class="big-play"><svg class="ic"><use href="#i-play"/></svg></div>
+          <button id="btnFsExit" class="fs-exit hidden" title="Salir de pantalla completa (Esc)">Salir · Esc</button>
+        </div>
+      </div>
+      <div class="transport">
+        <div class="t-left">
+          <span id="tc" class="tc">00:00.00</span><span class="tc-sep">/</span><span id="tcTotal" class="tc muted">00:00.00</span>
+        </div>
+        <div class="tbtns">
+          <button id="btnStart" class="ghost round" title="Ir al inicio (Inicio)"><svg class="ic"><use href="#i-start"/></svg></button>
+          <button id="btnBack" class="ghost round" title="Retroceder 5 s (←)"><svg class="ic"><use href="#i-back5"/></svg></button>
+          <button id="btnPlay" class="play" title="Reproducir / pausar (Espacio)"><svg class="ic i-play"><use href="#i-play"/></svg><svg class="ic i-pause"><use href="#i-pause"/></svg></button>
+          <button id="btnFwd" class="ghost round" title="Avanzar 5 s (→)"><svg class="ic"><use href="#i-fwd5"/></svg></button>
+          <button id="btnEnd" class="ghost round" title="Ir al final (Fin)"><svg class="ic"><use href="#i-end"/></svg></button>
+        </div>
+        <div class="t-right">
+          <button id="btnMute" class="ghost round" title="Silenciar vista previa (M)"><svg class="ic i-vol"><use href="#i-vol"/></svg><svg class="ic i-mute"><use href="#i-mute"/></svg></button>
+          <input id="volPreview" type="range" min="0" max="1" step="0.05" value="1" title="Volumen de la vista previa" class="vol">
+          <button id="btnFull" class="ghost round" title="Pantalla completa (F)"><svg class="ic"><use href="#i-full"/></svg></button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="right">
+      <div class="panel-head"><h2 id="inspTitle">Proyecto</h2></div>
+      <div id="inspector" class="inspector"></div>
+    </aside>
+  </main>
+
+  <!-- Línea de tiempo -->
+  <footer id="timelineArea" class="timeline-area hidden">
+    <div class="tl-toolbar">
+      <button id="btnUndo" class="ghost icon-only" title="Deshacer (Ctrl+Z)"><svg class="ic"><use href="#i-undo"/></svg></button>
+      <button id="btnRedo" class="ghost icon-only" title="Rehacer (Ctrl+Y)"><svg class="ic"><use href="#i-redo"/></svg></button>
+      <span class="tl-sep"></span>
+      <button id="btnSplit" class="ghost" title="Dividir en el cursor (S)"><svg class="ic"><use href="#i-cut"/></svg> Dividir</button>
+      <button id="btnDelete" class="ghost" title="Eliminar selección (Supr)"><svg class="ic"><use href="#i-trash"/></svg> Eliminar</button>
+      <button id="btnAddLane" class="ghost" title="Añadir pista de audio"><svg class="ic"><use href="#i-lane"/></svg> Pista</button>
+      <span class="spacer"></span>
+      <label class="toggle" title="Imán: ajusta los clips a bordes y al cursor"><input id="snap" type="checkbox" checked><svg class="ic"><use href="#i-magnet"/></svg></label>
+      <button id="btnZoomOut" class="ghost icon-only" title="Alejar (-)"><svg class="ic"><use href="#i-zoomout"/></svg></button>
+      <input id="zoom" type="range" min="2" max="400" value="60" title="Zoom de la línea de tiempo">
+      <button id="btnZoomIn" class="ghost icon-only" title="Acercar (+)"><svg class="ic"><use href="#i-zoomin"/></svg></button>
+      <button id="btnZoomFit" class="ghost icon-only" title="Ver todo (Z)"><svg class="ic"><use href="#i-fit"/></svg></button>
+      <span class="tl-sep"></span>
+      <button id="btnSave" class="ghost" title="Guardar (Ctrl+S)"><svg class="ic"><use href="#i-save"/></svg> Guardar</button>
+      <button id="btnExport" class="primary" title="Descargar el vídeo final"><svg class="ic"><use href="#i-down"/></svg> Descargar MP4</button>
+    </div>
+    <div id="timeline" class="timeline">
+      <div class="tl-heads" id="tlHeads"></div>
+      <div class="tl-scroll" id="tlScroll">
+        <div class="tl-inner" id="tlInner">
+          <div class="ruler" id="ruler"></div>
+          <div class="tracks" id="tracks"></div>
+          <div class="hoverline" id="hoverline"><span id="hoverTime"></span></div>
+          <div class="playhead" id="playhead"><div class="ph-knob"></div></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Nuevo proyecto -->
+  <div id="newDialog" class="modal hidden">
+    <div class="modal-card">
+      <h2>Nuevo proyecto</h2>
+      <label class="field">Nombre <input id="newName" type="text" value="Mi vídeo" spellcheck="false"></label>
+      <label class="field">Formato</label>
+      <div class="aspect-pick" id="newAspectPick">
+        <button data-v="1920x1080" class="on"><span class="ar" style="aspect-ratio:16/9"></span>16:9<small>YouTube</small></button>
+        <button data-v="1080x1920"><span class="ar" style="aspect-ratio:9/16"></span>9:16<small>Shorts · TikTok</small></button>
+        <button data-v="1080x1080"><span class="ar" style="aspect-ratio:1/1"></span>1:1<small>Cuadrado</small></button>
+        <button data-v="1080x1350"><span class="ar" style="aspect-ratio:4/5"></span>4:5<small>Instagram</small></button>
+      </div>
+      <input id="newAspect" type="hidden" value="1920x1080">
+      <div class="modal-actions">
+        <button id="newCancel" class="ghost">Cancelar</button>
+        <button id="newCreate" class="primary">Crear y editar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Descargar MP4 -->
+  <div id="exportDialog" class="modal hidden">
+    <div class="modal-card">
+      <h2>Descargar vídeo</h2>
+      <p class="muted small" id="expSummary">Se unirá todo el montaje en un único MP4.</p>
+      <label class="field">Calidad</label>
+      <div class="seg" id="expQualityPick">
+        <button data-v="rapida">Rápida</button><button data-v="normal" class="on">Normal</button><button data-v="alta">Alta</button>
+      </div>
+      <input id="expQuality" type="hidden" value="normal">
+      <div class="modal-actions">
+        <button id="expCancel" class="ghost">Cancelar</button>
+        <button id="expGo" class="primary"><svg class="ic"><use href="#i-down"/></svg> Descargar MP4</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="job" class="job hidden">
+    <div class="job-card">
+      <div id="jobLabel">Procesando…</div>
+      <div class="bar"><div id="jobBar"></div></div>
+      <button id="jobCancel" class="ghost small hidden">Cancelar</button>
+    </div>
+  </div>
+  <div id="toast" class="toast hidden"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

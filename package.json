@@ -1,0 +1,15 @@
+{
+  "name": "caplis",
+  "productName": "Caplis",
+  "version": "0.2.0",
+  "description": "Caplis - editor de video propio: montaje, audio propio, mejora de voz con IA y narracion automatica.",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "check": "node scripts/selftest.mjs && node scripts/selftest-fx.mjs"
+  },
+  "devDependencies": {
+    "electron": "^45.2.2"
+  }
+}
