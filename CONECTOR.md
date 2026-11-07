@@ -30,7 +30,8 @@ previsualizas, pides otro cambio, Claude lo aplica… y solo cuando te guste exp
 | `load <proyecto> [--play] [--seek t] [--version n]` | Abre en la app (con `--version`, vista previa de una versión) |
 | `toast "msg"`, `control [--seek t] [--play] [--pause] [--tab ...]`, `say`, `voices`, `enhance` | Varios |
 
-`<proyecto>` = ruta a `.caplis` o su nombre (se busca en `proyectos/`).
+`<proyecto>` = ruta a `.caplis` o su nombre (se busca en `proyectos/`). `get`, `lint`, `frame`, `sheet` y `render`
+aceptan `--version n` para trabajar sobre una versión del historial sin tocar el proyecto.
 
 ## Operaciones de `edit` (JSON: lista de `{ "op": ..., ... }`)
 Clips de vídeo: `id` = id del clip **o posición** (0 = primero). Audio, textos y efectos: `id` (lo da `get`).

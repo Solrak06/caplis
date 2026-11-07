@@ -13,7 +13,7 @@
 //   node caplis-connect.mjs revert <proyecto> <versión>               # vuelve a una versión (crea otra nueva)
 //   node caplis-connect.mjs frame <proyecto> <t> <salida.jpg> [--width 540]
 //   node caplis-connect.mjs sheet <proyecto> <salida.jpg> [--every 1] [--cols 6] [--width 240]
-//   node caplis-connect.mjs render <proyecto> <salida.mp4> [--quality alta|normal|rapida] [--draft] [--range a-b]
+//   node caplis-connect.mjs render <proyecto> <salida.mp4> [--quality alta|normal|rapida] [--draft] [--range a-b] [--version n]
 //   node caplis-connect.mjs sfx "<búsqueda>" [--limit 10]             # busca efectos de sonido en la biblioteca
 //   node caplis-connect.mjs load <proyecto> [--play] [--seek t] [--version v]
 //   node caplis-connect.mjs voices [engine] | say "texto" [--voice X] [--engine windows|edge] [--out archivo]
@@ -62,6 +62,12 @@ function resolveProject(p) {
   const cands = [p, path.join(PROJECTS, p), path.join(PROJECTS, p + '.caplis'), path.join(PROJECTS, safeName(p) + '.caplis')];
   for (const c of cands) if (fs.existsSync(c) && fs.statSync(c).isFile()) return path.resolve(c);
   throw new Error('No encuentro el proyecto: ' + p);
+}
+// Lectura de solo consulta: con --version n lee esa versión del historial (get, lint, frame, sheet, render).
+function readProjectVersion(file) {
+  const v = flag('version');
+  if (v && v !== true) { const n = parseInt(String(v).replace(/^v/i, ''), 10); const p = versions.get(file, n); p.version = n; return p; }
+  return readJson(file);
 }
 function writeProject(file, project) {
   const tmp = file + '.tmp'; fs.writeFileSync(tmp, JSON.stringify(project, null, 2), 'utf8'); fs.renameSync(tmp, file);
@@ -132,7 +138,7 @@ try {
 
   } else if (cmd === 'get') {
     const file = resolveProject(args[1]);
-    const p = readJson(file);
+    const p = readProjectVersion(file);
     out({ ok: true, project: file, ...(has('full') ? { data: p } : describe(p)), versions: versions.list(file).slice(0, 5).map(({ v, ts, author, message }) => ({ v, when: new Date(ts).toISOString(), author, message })) });
 
   } else if (cmd === 'edit') {
@@ -150,7 +156,7 @@ try {
   } else if (cmd === 'lint') {
     const file = resolveProject(args[1]);
     const { lint } = require(path.join(ROOT, 'lib', 'lint.js'));
-    const r = lint(readJson(file), { canal: flag('canal') && flag('canal') !== true ? flag('canal') : null });
+    const r = lint(readProjectVersion(file), { canal: flag('canal') && flag('canal') !== true ? flag('canal') : null });
     out({ project: file, ...r });
     if (!r.ok) process.exitCode = 2;
 
@@ -170,13 +176,13 @@ try {
   } else if (cmd === 'frame') {
     const file = resolveProject(args[1]);
     const t = +args[2]; const outPath = path.resolve(args[3] || path.join(GEN(), 'frame.jpg'));
-    const r = await renderProject(readJson(file), outPath, { videoOnly: true, frameAt: t, frameWidth: +(flag('width', 540)) });
+    const r = await renderProject(readProjectVersion(file), outPath, { videoOnly: true, frameAt: t, frameWidth: +(flag('width', 540)) });
     out({ ok: true, ...r, t });
 
   } else if (cmd === 'sheet') {
     const file = resolveProject(args[1]);
     const outPath = path.resolve(args[2] || path.join(GEN(), 'hoja.jpg'));
-    const r = await renderProject(readJson(file), outPath, { videoOnly: true, sheet: { every: +(flag('every', 1)), cols: +(flag('cols', 6)), width: +(flag('width', 240)) } });
+    const r = await renderProject(readProjectVersion(file), outPath, { videoOnly: true, sheet: { every: +(flag('every', 1)), cols: +(flag('cols', 6)), width: +(flag('width', 240)) } });
     out({ ok: true, ...r });
 
   } else if (cmd === 'load') {
@@ -190,7 +196,7 @@ try {
     const file = resolveProject(args[1]);
     const outPath = path.resolve(args[2] || path.join(GEN(), 'render.mp4'));
     const range = flag('range') ? String(flag('range')).split('-').map(Number) : null;
-    const r = await renderProject(readJson(file), outPath, { quality: has('draft') ? 'rapida' : flag('quality', 'normal'), scale: has('draft') ? 0.5 : 1, range });
+    const r = await renderProject(readProjectVersion(file), outPath, { quality: has('draft') ? 'rapida' : flag('quality', 'normal'), scale: has('draft') ? 0.5 : 1, range });
     out({ ok: true, ...r });
 
   } else if (cmd === 'voices') {
