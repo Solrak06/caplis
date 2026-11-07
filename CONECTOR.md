@@ -37,6 +37,7 @@ Clips de vídeo: `id` = id del clip **o posición** (0 = primero). Audio, textos
 | op | campos |
 |---|---|
 | `set_project` | `name, aspect, fit (contain\|cover), fps, script` |
+| `set_meta` | `viralis: {canal, titulo, …}` — metadatos de origen (se fusionan; `null` borra) |
 | `add_clip` | `file, index?, in, out, speed, volume, muted, fx, transition, cropX, note` |
 | `update_clip` | `id, in, out, speed, volume, muted, cropX, fx (se fusiona; null borra), transition` |
 | `remove_clip` / `move_clip` | `id` / `id, index` |
