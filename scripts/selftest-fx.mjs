@@ -59,6 +59,9 @@ ok(rv.entry.v === 3 && rv.project.video.length === 2, 'restaurar v1 crea la v3 c
 const { args } = buildExport({ ...project, audio: [] }, path.join(dir, 'x.mp4'), {});
 const fc = args[args.indexOf('-filter_complex') + 1];
 ok(fc.includes('xfade=transition=fadewhite') && fc.includes('drawbox') && fc.includes('vignette'), 'la exportación incluye transición, impacto y look');
+const { lint } = require(path.join(root, 'lib', 'lint.js'));
+const li = lint({ ...project, viralis: { canal: 'mrowl' } });
+ok(!li.ok && li.errores.some((e) => /música/.test(e)) && li.errores.some((e) => /legible|leerse|zona segura|canal mrowl/.test(e)), 'lint detecta falta de música y reglas del canal');
 fs.rmSync(dir, { recursive: true, force: true });
 
 console.log('\n' + (fail ? `FALLOS: ${fail}` : 'TODO OK (efectos, operaciones y versiones)'));

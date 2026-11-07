@@ -8,7 +8,8 @@ previsualizas, pides otro cambio, Claude lo aplica… y solo cuando te guste exp
 1. `build receta.json --load` → crea el proyecto (o lo actualiza si ya existe: misma ruta = mismo proyecto, versión nueva).
 2. `get <proyecto>` → ids, tiempos y efectos actuales.
 3. `edit <proyecto> ops.json --msg "qué cambia"` → aplica cambios, guarda versión, Caplis recarga al instante.
-4. Para comprobar sin render: `frame <proyecto> <t> f.jpg` (1 fotograma, ~4 s) o `sheet <proyecto> hoja.jpg --every 0.5`.
+4. Para comprobar sin render: `lint <proyecto>` (reglas), `frame <proyecto> <t> f.jpg` (1 fotograma, ~4 s) o
+   `sheet <proyecto> hoja.jpg --every 0.5`.
 5. `history` / `revert <proyecto> <n>` si hay que volver atrás.
 6. Final: `render <proyecto> salida.mp4` (o el botón Exportar de Caplis).
 
@@ -20,6 +21,7 @@ previsualizas, pides otro cambio, Claude lo aplica… y solo cuando te guste exp
 | `build <receta> [--into <proyecto>] [--msg ..] [--load] [--play] [--render out.mp4]` | Monta desde receta. `--into` = reescribe ESE proyecto como versión nueva |
 | `get <proyecto> [--full]` | Resumen editable (o JSON completo) + últimas versiones |
 | `edit <proyecto> <ops.json \| '[...]' \| -> --msg ".." [--dry] [--no-load] [--seek t] [--author claude]` | Aplica operaciones (abajo) |
+| `lint <proyecto> [--canal nefralis\|solrak\|mrowl]` | Reglas de Viralis sin renderizar: legibilidad (0,6 s + 0,32 s/palabra), zona segura, ≤ 2 tipografías, plano ≤ 3,5 s, gancho (texto, movimiento y golpe en el 0), música y huecos de audio, transiciones/impactos que no van con el canal. Sale con código 2 si hay errores |
 | `history <proyecto>` / `revert <proyecto> <n>` | Versiones / restaurar (crea versión nueva) |
 | `frame <proyecto> <t> <out.jpg> [--width 540]` | Un fotograma con todos los efectos y textos |
 | `sheet <proyecto> <out.jpg> [--every 1] [--cols 6] [--width 240]` | Hoja de contacto con marca de tiempo |

@@ -8,6 +8,7 @@
 //   node caplis-connect.mjs build <receta.json> [--into <proyecto>] [--msg "..."] [--load] [--play] [--render salida.mp4]
 //   node caplis-connect.mjs get <proyecto> [--full]                   # resumen editable (ids, tiempos, efectos)
 //   node caplis-connect.mjs edit <proyecto> <ops.json | '[{...}]'> --msg "qué cambia" [--author claude] [--dry] [--no-load] [--seek t]
+//   node caplis-connect.mjs lint <proyecto> [--canal nefralis|solrak|mrowl]   # reglas de Viralis sin renderizar (errores/avisos)
 //   node caplis-connect.mjs history <proyecto>                        # versiones
 //   node caplis-connect.mjs revert <proyecto> <versión>               # vuelve a una versión (crea otra nueva)
 //   node caplis-connect.mjs frame <proyecto> <t> <salida.jpg> [--width 540]
@@ -145,6 +146,13 @@ try {
       const entry = commitAndNotify(file, project, { author: flag('author', 'claude'), message, load: !has('no-load'), seek: flag('seek') != null ? +flag('seek') : null });
       out({ ok: true, project: file, version: entry.v, unchanged: !!entry.unchanged, applied, appRunning: appRunning() });
     }
+
+  } else if (cmd === 'lint') {
+    const file = resolveProject(args[1]);
+    const { lint } = require(path.join(ROOT, 'lib', 'lint.js'));
+    const r = lint(readJson(file), { canal: flag('canal') && flag('canal') !== true ? flag('canal') : null });
+    out({ project: file, ...r });
+    if (!r.ok) process.exitCode = 2;
 
   } else if (cmd === 'history') {
     const file = resolveProject(args[1]);
